@@ -1,103 +1,9 @@
 ﻿@using FileUploadWithTailwind.Models
 @model PhotoUploadViewModal;
+@{
+    var defaultCropBoxDimensions = @Model.PhotoCropBoxDimensions.FirstOrDefault();
+}
 
-<div class="fixed hidden z-50 inset-0 bg-gray-900 bg-opacity-60 overflow-y-auto h-full w-full px-4" aria-labelledby="modal-title" role="dialog" aria-modal="false" id="fileEditModal">
-    <div class="relative top-10 mx-auto shadow-xl rounded-md bg-white w-1/2">
-        <div class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all mx-auto">
-            <div class="bg-gray-50 px-4 py-3 sm:flex sm:px-6">
-                <div class="sm:flex sm:items-start">
-                    <div class="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
-                        <h2 class="text-base font-semibold leading-6 text-gray-900" id="modal-title">
-                            @Model.PopupTitle
-                        </h2>
-                    </div>
-                </div>
-            </div>
-            <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
-                <div class="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
-                    <div class="mt-2">
-                        <div id="image-edit-button-container">
-                            <div class="flex flex-row justify-start mb-2 ">
-                                <button id="btnImageEdit"
-                                        class="bg-blue-500 hover:bg-blue-700 text-white text-sm font-semibold py-1 px-2 rounded me-2">
-                                    Edit
-                                </button>
-                                <button id="btnImageReset"
-                                        class="bg-gray-500 hover:bg-gray-700 text-white text-sm font-semibold py-1 px-2 rounded me-2">
-                                    Reset
-                                </button>
-                            </div>
-                        </div>
-                        <div class="hidden" id="image-action-button-container">
-                            <div class="flex flex-row justify-start mb-2 ">
-                                <div>
-                                    <button id="crop"
-                                            class="bg-blue-500 hover:bg-blue-700 text-white text-sm font-semibold py-1 px-2 rounded me-2">
-                                        Crop
-                                    </button>
-                                </div>
-                                <div class="me-2">
-                                    <div class="relative inline-block text-left">
-                                        <div>
-                                            <button type="button"
-                                                    class="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white px-2 py-1 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
-                                                    id="cropBoxDropdownButton" aria-expanded="true" aria-haspopup="true">
-                                                <span>1024x300</span>
-                                                <svg class="-mr-1 h-5 w-5 text-gray-400" viewBox="0 0 20 20"
-                                                     fill="currentColor" aria-hidden="true">
-                                                    <path fill-rule="evenodd"
-                                                          d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
-                                                          clip-rule="evenodd" />
-                                                </svg>
-                                            </button>
-                                        </div>
-                                        <div class="absolute left-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none hidden"
-                                             role="menu" id="cropBoxDropdown" aria-orientation="vertical"
-                                             aria-labelledby="menu-button" tabindex="-1">
-                                            <div class="py-1" role="none">
-                                                <a href="#"
-                                                   class="text-gray-700 block px-4 py-2 text-sm crop-box-dropdown-options"
-                                                   data-cropBoxWidth="1024" data-cropBoxHeight="300" role="menuitem"
-                                                   tabindex="-1">1024x300</a>
-                                                <a href="#"
-                                                   class="text-gray-700 block px-4 py-2 text-sm crop-box-dropdown-options"
-                                                   data-cropBoxWidth="400" data-cropBoxHeight="300" role="menuitem"
-                                                   tabindex="-1">400x300</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div>
-                                    <button id="btnCancelEdit"
-                                            class="bg-red-500 hover:bg-red-700 text-white text-sm font-semibold py-1 px-2 rounded me-2">
-                                        Cancel
-                                    </button>
-                                </div>
-                            </div>
-
-                        </div>
-                        <div class="bg-gray-50 p-4 backdrop:rounded-lg min-h-[10rem] text-center flex flex-col items-center justify-center border-dashed border-2 border-blue-200">
-                            <div class="relative">
-                                <div class="space-x-2 space-y-2 mt-4 file-edit-preview">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
-                <button type="button" id="btn-upload"
-                        class="inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-800 sm:ml-3 sm:w-auto">
-                    Upload
-                </button>
-                <button type="button"
-                        class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto">
-                    Cancel
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
 <div class="fixed hidden z-50 inset-0 bg-gray-900 bg-opacity-60 overflow-y-auto h-full w-full px-4" aria-labelledby="modal-title" role="dialog" aria-modal="false" id="@Model.ContextId">
     <div class="relative top-10 mx-auto shadow-xl rounded-md bg-white w-1/2">
         <div class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all mx-auto">
@@ -110,114 +16,235 @@
                     </div>
                 </div>
             </div>
-            <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
-                <div class="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
-                    <div class="mt-2">
+            <!--Modal Body-->
+            <!--START-->
 
-
-                        <form ondragover="handleDragOver(event)" ondrop="handleDrop(event)"
-                              class="bg-gray-50 p-4 backdrop:rounded-lg min-h-[10rem] text-center flex flex-col items-center justify-center border-dashed border-2 border-blue-200">
-                            <div id="file-upload-container">
-                                <svg class="mx-auto h-12 w-12 text-gray-300" viewBox="0 0 24 24" fill="currentColor"
-                                     aria-hidden="true">
-                                    <path fill-rule="evenodd"
-                                          d="M1.5 6a2.25 2.25 0 012.25-2.25h16.5A2.25 2.25 0 0122.5 6v12a2.25 2.25 0 01-2.25 2.25H3.75A2.25 2.25 0 011.5 18V6zM3 16.06V18c0 .414.336.75.75.75h16.5A.75.75 0 0021 18v-1.94l-2.69-2.689a1.5 1.5 0 00-2.12 0l-.88.879.97.97a.75.75 0 11-1.06 1.06l-5.16-5.159a1.5 1.5 0 00-2.12 0L3 16.061zm10.125-7.81a1.125 1.125 0 112.25 0 1.125 1.125 0 01-2.25 0z"
-                                          clip-rule="evenodd" />
-                                </svg>
-                                <div class="mt-4 flex text-sm leading-6 text-gray-600">
-                                    <label for="file-upload"
-                                           class="relative cursor-pointer rounded-md font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500">
-                                        <span>Upload a file</span>
-                                        <input id="file-upload" name="file-upload" type="file" class="sr-only"
-                                               onchange="handleChange(event)">
-                                    </label>
-                                    <p class="pl-1">or drag and drop</p>
+            <!--File upload section-->
+            <!--START-->
+            <div id="fileUploadWrapper" class="">
+                <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
+                    <div class="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
+                        <div class="mt-2">
+                            <form ondragover="handleDragOver(event)" ondrop="handleDrop(event)"
+                                  class="bg-gray-50 p-4 backdrop:rounded-lg min-h-[10rem] text-center flex flex-col items-center justify-center border-dashed border-2 border-blue-200">
+                                <div id="file-upload-container">
+                                    <svg class="mx-auto h-12 w-12 text-gray-300" viewBox="0 0 24 24" fill="currentColor"
+                                         aria-hidden="true">
+                                        <path fill-rule="evenodd"
+                                              d="M1.5 6a2.25 2.25 0 012.25-2.25h16.5A2.25 2.25 0 0122.5 6v12a2.25 2.25 0 01-2.25 2.25H3.75A2.25 2.25 0 011.5 18V6zM3 16.06V18c0 .414.336.75.75.75h16.5A.75.75 0 0021 18v-1.94l-2.69-2.689a1.5 1.5 0 00-2.12 0l-.88.879.97.97a.75.75 0 11-1.06 1.06l-5.16-5.159a1.5 1.5 0 00-2.12 0L3 16.061zm10.125-7.81a1.125 1.125 0 112.25 0 1.125 1.125 0 01-2.25 0z"
+                                              clip-rule="evenodd" />
+                                    </svg>
+                                    <div class="mt-4 flex text-sm leading-6 text-gray-600">
+                                        <label for="file-upload"
+                                               class="relative cursor-pointer rounded-md font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500">
+                                            <span>Upload a file</span>
+                                            <input id="file-upload" name="file-upload" type="file" class="sr-only"
+                                                   onchange="handleChange(event)">
+                                        </label>
+                                        <p class="pl-1">or drag and drop</p>
+                                    </div>
+                                    <p class="text-xs leading-5 text-gray-600">PNG or JPG</p>
                                 </div>
-                                <p class="text-xs leading-5 text-gray-600">PNG or JPG</p>
-                            </div>
-                            <div class="relative">
-                                <div class="space-x-2 space-y-2 mt-4 file-upload-preview w-80">
+                                <div class="relative">
+                                    <div class="space-x-2 space-y-2 mt-4 file-upload-preview w-80">
+                                    </div>
                                 </div>
-                            </div>
-                        </form>
-                        <div class="text-gray-500 text-center mt-2 mb-2">or</div>
-                        <div class="sm:col-span-3">
-                            <div class="mt-2 relative">
-                                <input type="url" name="image-url" placeholder="Search image using google..." id="txtImageSearchKeyword"
-                                       class="block w-full rounded-md rounded-r-lg border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
-                                <button id="buttonSearchImages" type="button"
-                                        class="absolute top-0 right-0 rounded-r-lg border-0 border-gray-300 bg-blue-600 p-2 text-sm font-medium text-white hover:bg-blue-700 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500">
-                                    Search Image
-                                </button>
-                            </div>
-                            <div id="searchedImageContainer" class="flex flex-wrap mt-2">
+                            </form>
+                            <div class="text-gray-500 text-center mt-2 mb-2">or</div>
+                            <div class="sm:col-span-3">
+                                <div class="mt-2 relative">
+                                    <input type="url" name="image-url" placeholder="Search image using google..." id="txtImageSearchKeyword"
+                                           class="block w-full rounded-md rounded-r-lg border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                                    <button id="buttonSearchImages" type="button"
+                                            class="absolute top-0 right-0 rounded-r-lg border-0 border-gray-300 bg-blue-600 p-2 text-sm font-medium text-white hover:bg-blue-700 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500">
+                                        Search Image
+                                    </button>
+                                </div>
+                                <div id="searchedImageContainer" class="flex flex-wrap mt-2">
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
+                <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
+                    <button type="button" id="btn-next"
+                            class="inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-800 sm:ml-3 sm:w-auto">
+                        Next
+                    </button>
+                    <button type="button"
+                            class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto">
+                        Cancel
+                    </button>
+                </div>
             </div>
-            <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
-                <button type="button" id="btn-next"
-                        class="inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-800 sm:ml-3 sm:w-auto">
-                    Next
-                </button>
-                <button type="button"
-                        class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto">
-                    Cancel
-                </button>
+            <!--END-->
+            <!--File upload section-->
+
+            <!--File edit section-->
+            <!--START-->
+            <div id="fileEditWrapper" class="hidden">
+                <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
+                    <div class="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
+                        <div class="mt-2">
+                            <div id="image-edit-button-container">
+                                <div class="flex flex-row justify-start mb-2 ">
+                                    <button id="btnImageEdit"
+                                            class="bg-blue-500 hover:bg-blue-700 text-white text-sm font-semibold py-1 px-2 rounded me-2">
+                                        Edit
+                                    </button>
+                                    <button id="btnImageReset"
+                                            class="bg-gray-500 hover:bg-gray-700 text-white text-sm font-semibold py-1 px-2 rounded me-2">
+                                        Reset
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="hidden" id="image-action-button-container">
+                                <div class="flex flex-row justify-start mb-2 ">
+                                    <div>
+                                        <button id="crop" class="bg-blue-500 hover:bg-blue-700 text-white text-sm font-semibold py-1 px-2 rounded me-2">
+                                            Crop
+                                        </button>
+                                    </div>
+                                    <div class="me-2">
+                                        <div class="relative inline-block text-left">
+                                            <div>
+                                                <button type="button"
+                                                        class="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white px-2 py-1 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+                                                        id="cropBoxDropdownButton" aria-expanded="true" aria-haspopup="true">
+                                                    <span>
+                                                        @string.Format("{0}x{1}", defaultCropBoxDimensions?.Width, defaultCropBoxDimensions?.Height)
+                                                    </span>
+                                                    <svg class="-mr-1 h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                                        <path fill-rule="evenodd"
+                                                              d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
+                                                              clip-rule="evenodd" />
+                                                    </svg>
+                                                </button>
+                                            </div>
+                                            <div class="absolute left-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none hidden"
+                                                 role="menu" id="cropBoxDropdown" aria-orientation="vertical"
+                                                 aria-labelledby="menu-button" tabindex="-1">
+                                                <div class="py-1" role="none">
+                                                    @{
+                                                        foreach (var photoCropBoxDimensions in Model.PhotoCropBoxDimensions)
+                                                        {
+                                                            <a href="#"
+                                                               class="text-gray-700 block px-4 py-2 text-sm crop-box-dropdown-options"
+                                                               data-cropBoxWidth="@photoCropBoxDimensions.Width" data-cropBoxHeight="@photoCropBoxDimensions.Height" role="menuitem"
+                                                               tabindex="-1">
+                                                                @string.Format("{0}x{1}", photoCropBoxDimensions.Width, photoCropBoxDimensions.Height)
+                                                            </a>
+                                                        }
+                                                    }
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <button id="btnCancelEdit"
+                                                class="bg-red-500 hover:bg-red-700 text-white text-sm font-semibold py-1 px-2 rounded me-2">
+                                            Cancel
+                                        </button>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="bg-gray-50 p-4 backdrop:rounded-lg min-h-[10rem] text-center flex flex-col items-center justify-center border-dashed border-2 border-blue-200">
+                                <div class="relative">
+                                    <div class="space-x-2 space-y-2 mt-4 file-edit-preview">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
+                    <button type="button" id="btn-upload"
+                            class="inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-800 sm:ml-3 sm:w-auto">
+                        Upload
+                    </button>
+                    <button type="button"
+                            class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto">
+                        Cancel
+                    </button>
+                </div>
             </div>
+            <!--ENN-->
+            <!--File edit section-->
+
+            <!--END-->
+            <!--Modal Body-->
         </div>
     </div>
 </div>
+<script src="~/js/image-upload.js"></script>
+
 <script>
-    const editImageModal = document.getElementById('@Model.ContextId');
+    var imageUploader = ImageUploader();
+    imageUploader.init('@Model.ContextId', @defaultCropBoxDimensions?.Width, @defaultCropBoxDimensions?.Height, '@Model.DestinationFolder')
+    document.getElementById('btnOpenWithAllParams').addEventListener('click', function () {
+        imageUploader.open();
+    });
+</script>
+<script>
+    /*
+    const fileUploadModal = document.getElementById('@Model.ContextId');
+    const fileUploadSection = document.getElementById('fileUploadWrapper');
     const uploadBtn = document.getElementById("btn-upload");
-    const fileEditModal = document.getElementById('fileEditModal');
-    const btn = document.getElementById('open-btn');
+    const fileEditSection = document.getElementById('fileEditWrapper');
+    const btn = document.getElementById('btnOpenWithAllParams');
     const btnNext = document.getElementById('btn-next');
     const fileUploadContainer = document.getElementById("file-upload-container");
-    const input = document.querySelector("#file-upload");
     const btnSearchImages = document.getElementById('buttonSearchImages');
     const searchedImageContainer = document.getElementById('searchedImageContainer');
-    const googleImageCardTemplate = `
-        <div class="rounded-lg bg-white text-surface shadow-secondary-1 dark:bg-surface-dark dark:text-white md:max-w-xl md:flex-row me-2 mb-2" style="width:10rem; height: 10rem">
-                <a href="#"><img class="rounded-lg searched-image" src="IMAGE_URL" style="max-height: 100%; padding: 2px"></a>
-        </div>`;
     const imageEditButtonContainer = document.querySelector('#image-edit-button-container');
     const imageActionButtonContainer = document.getElementById("image-action-button-container");
     const cropBoxDropdown = document.querySelector('#cropBoxDropdown');
     const cropBoxDropdownOptions = document.querySelectorAll('.crop-box-dropdown-options');
+    const input = document.querySelector("#file-upload");
+
+    const googleImageCardTemplate = `
+        <div class="rounded-lg bg-white text-surface shadow-secondary-1 dark:bg-surface-dark dark:text-white md:max-w-xl md:flex-row me-2 mb-2" style="width:10rem; height: 10rem">
+                <a href="#"><img class="rounded-lg searched-image" src="IMAGE_URL" style="max-height: 100%; padding: 2px"></a>
+        </div>`;
 
     let isImageEditEnable = false;
     let initialImage;
     let lastUpdatedImage;
     let cropper;
-    let currentCropperBoxWidth = 1024;
-    let currentCropperBoxHeight = 300;
+    let currentCropperBoxWidth = @defaultCropBoxDimensions?.Width;
+    let currentCropperBoxHeight = @defaultCropBoxDimensions?.Height;
     let currentSearchedImageSelectedUrl;
+
+    btn.onclick = () => {
+        fileUploadModal.classList.remove("hidden")
+    };
 
     document.addEventListener('click', (event) => {
         if (event.target.classList && event.target.classList.contains('searched-image')) {
             document.querySelectorAll(".searched-image").forEach(img => {
-                img.classList.remove('border-doubled');
-                img.classList.remove('border-2');
-                img.classList.remove('border-blue-600');
+                img.classList.remove('border-doubled', 'border-2', 'border-blue-600');
             });
-
-            event.target.classList.add('border-doubled');
-            event.target.classList.add('border-2');
-            event.target.classList.add('border-blue-600');
-
+            event.target.classList.add('border-doubled', 'border-2', 'border-blue-600');
             currentSearchedImageSelectedUrl = event.target.src;
         }
     });
 
+    btnNext.onclick = async () => {
+        fileUploadSection.classList.add("hidden");
+        fileEditSection.classList.remove("hidden");
+
+        if (!initialImage && !currentSearchedImageSelectedUrl) return;
+
+        if (!initialImage && currentSearchedImageSelectedUrl) initialImage = await getDataUrl(currentSearchedImageSelectedUrl);
+
+        loadImageToCropper('.file-edit-preview', initialImage)
+    };
+
     imageEditButtonContainer.querySelector("#btnImageEdit").addEventListener('click', () => {
         imageEditButtonContainer.classList.add("hidden");
         imageActionButtonContainer.classList.remove('hidden');
-
         isImageEditEnable = true;
-
         const imageContainer = document.querySelector('.file-edit-preview');
         initiCropperObject('.file-edit-preview', imageContainer.querySelector('img').src);
     });
@@ -256,32 +283,13 @@
         imageActionButtonContainer.classList.add('hidden');
     });
 
-    btn.onclick = () => {
-        editImageModal.classList.remove("hidden")
-    };
-
     uploadBtn.onclick = () => {
         uploadImage(document.querySelector(".file-edit-preview").querySelector("img").src);
     };
 
-    btnNext.onclick = async () => {
-        editImageModal.classList.add("hidden");
-        fileEditModal.classList.remove("hidden");
-
-        if (!initialImage && !currentSearchedImageSelectedUrl) return;
-
-        if (!initialImage && currentSearchedImageSelectedUrl) initialImage = await getDataUrl(currentSearchedImageSelectedUrl);
-
-        loadImageToCropper('.file-edit-preview', initialImage)
-    };
-
     btnSearchImages.onclick = () => {
         searchImages(document.getElementById("txtImageSearchKeyword").value).then((links) => {
-            var html = ""
-            for (const link of links) {
-                html = html + googleImageCardTemplate.replace("IMAGE_URL", link);
-            }
-            searchedImageContainer.innerHTML = html;
+            searchedImageContainer.innerHTML = links.map(link => googleImageCardTemplate.replace("IMAGE_URL", link)).join('');
         });
     };
 
@@ -300,10 +308,6 @@
         return URL.createObjectURL(blob);
     }
 
-
-
-
-    // Functions
     function handleDragOver(e) {
         e.preventDefault();
         e.target.style.borderColor = "rgba(164, 37, 228)";
@@ -328,7 +332,6 @@
     function previewFile(files) {
         if (!files) return;
         fileUploadContainer.classList.add("hidden");
-
         for (const file of files) {
             if (file.type.startsWith("image/")) {
                 const reader = new FileReader();
@@ -342,8 +345,8 @@
     }
 
     const searchImages = async (query) => {
-        const apiKey = 'AIzaSyBnMeVkfzCxtWdCjNBmt5RkEMVFxL4SGvQ';
-        const searchEngineId = 'e1539b4f25fee4390';
+        const apiKey = 'AIzaSyBnMeVkfzCxtWdCjNBmt5RkEMVFxL4SGvQ'; // Replace with your API key
+        const searchEngineId = 'e1539b4f25fee4390'; // Replace with your Engine ID
 
         const response = await fetch(`https://www.googleapis.com/customsearch/v1?q=${encodeURIComponent(query)}&cx=${searchEngineId}&key=${apiKey}&searchType=image`);
 
@@ -352,26 +355,17 @@
         return data.items.map((item) => item.link);
     };
 
-    // Example usage:
-
-
-    function loadImageToCropper(conatinerId, imgSrc) {
-        const imageContainer = document.querySelector(conatinerId);
-        imageContainer.innerHTML = '';
-        const imgElement = document.createElement('img');
-        imgElement.src = imgSrc;
-        imageContainer.appendChild(imgElement);
+    function loadImageToCropper(containerId, imgSrc) {
+        const imageContainer = document.querySelector(containerId);
+        imageContainer.innerHTML = `<img src="${imgSrc}" class="rounded-lg" style="max-height: 100%; padding: 2px">`;
     }
 
-    function initiCropperObject(conatinerId, imgSrc) {
+    function initiCropperObject(containerId, imgSrc) {
         if (cropper && cropper.destroy) cropper.destroy();
-        const imageContainer = document.querySelector(conatinerId);
-        imageContainer.innerHTML = '';
-        const imgElement = document.createElement('img');
-        imgElement.src = imgSrc;
-        imageContainer.appendChild(imgElement);
+        const imageContainer = document.querySelector(containerId);
+        imageContainer.innerHTML = `<img src="${imgSrc}" class="rounded-lg" style="max-height: 100%; padding: 2px">`;
         if (!isImageEditEnable) return;
-        cropper = new Cropper(imgElement, {
+        cropper = new Cropper(imageContainer.querySelector('img'), {
             aspectRatio: currentCropperBoxWidth / currentCropperBoxHeight,
             viewMode: 1,
             cropBoxMovable: true,
@@ -396,15 +390,16 @@
                 if (!response.ok) {
                     throw new Error('Failed to save image');
                 }
-                fileEditModal.classList.add('hidden');
-                const filePreviewUploadContainer = document.querySelector('.file-upload-preview');
-                const fileEditContainer = document.querySelector('.file-edit-preview');
-                fileEditContainer.innerHTML = '';
-                filePreviewUploadContainer.innerHTML = '';
+                fileUploadModal.classList.add('hidden');
+                document.querySelector('.file-upload-preview').innerHTML = '';
+                document.querySelector('.file-edit-preview').innerHTML = '';
                 fileUploadContainer.classList.remove("hidden");
+                fileUploadSection.classList.remove("hidden");
+                fileEditSection.classList.add("hidden");
             })
             .catch(error => {
                 console.error(error);
             });
     }
+    */
 </script>
