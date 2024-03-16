@@ -1,4 +1,5 @@
 ﻿@using FileUploadWithTailwind.Models
+@using Microsoft.AspNetCore.Hosting.Server
 
 <!DOCTYPE html>
 <html lang="en">
@@ -17,15 +18,15 @@
             With All Crop Parameters 
         </button>
 
-        
-
-        @(await Component.InvokeAsync("PhotoUpload", new PhotoUploadViewModal
+        @(
+            await Component.InvokeAsync("PhotoUpload", new PhotoUploadViewModal
         {
             ContextId = "editPhotoModal",
-            DestinationFolder = "d:/",
+            DestinationFolder = @"D:\\Work\\FileUploadWithTailwind\\FileUploadWithTailwind\\Upload\\",
             JavaScriptCallBackFunction = "test();",
             PopupTitle = "Photo Upload"
-        }))
+        })
+        )
     </div>
     <script src="~/lib/croppper/cropper.min.js"></script>
 

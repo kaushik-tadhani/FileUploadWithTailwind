@@ -99,21 +99,21 @@
     </div>
 </div>
 <div class="fixed hidden z-50 inset-0 bg-gray-900 bg-opacity-60 overflow-y-auto h-full w-full px-4" aria-labelledby="modal-title" role="dialog" aria-modal="false" id="@Model.ContextId">
-<div class="relative top-10 mx-auto shadow-xl rounded-md bg-white w-1/2">
-    <div class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all mx-auto">
-        <div class="bg-gray-50 px-4 py-3 sm:flex sm:px-6">
-            <div class="sm:flex sm:items-start">
-                <div class="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
-                    <h2 class="text-base font-semibold leading-6 text-gray-900" id="modal-title">
-                        @Model.PopupTitle
-                    </h2>
+    <div class="relative top-10 mx-auto shadow-xl rounded-md bg-white w-1/2">
+        <div class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all mx-auto">
+            <div class="bg-gray-50 px-4 py-3 sm:flex sm:px-6">
+                <div class="sm:flex sm:items-start">
+                    <div class="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
+                        <h2 class="text-base font-semibold leading-6 text-gray-900" id="modal-title">
+                            @Model.PopupTitle
+                        </h2>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
-            <div class="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
-                <div class="mt-2">
-                    
+            <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
+                <div class="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
+                    <div class="mt-2">
+
 
                         <form ondragover="handleDragOver(event)" ondrop="handleDrop(event)"
                               class="bg-gray-50 p-4 backdrop:rounded-lg min-h-[10rem] text-center flex flex-col items-center justify-center border-dashed border-2 border-blue-200">
@@ -153,24 +153,25 @@
                             <div id="searchedImageContainer" class="flex flex-wrap mt-2">
                             </div>
                         </div>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
-            <button type="button" id="btn-next"
-                    class="inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-800 sm:ml-3 sm:w-auto">
-                Next
-            </button>
-            <button type="button"
-                    class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto">
-                Cancel
-            </button>
+            <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
+                <button type="button" id="btn-next"
+                        class="inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-800 sm:ml-3 sm:w-auto">
+                    Next
+                </button>
+                <button type="button"
+                        class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto">
+                    Cancel
+                </button>
+            </div>
         </div>
     </div>
 </div>
-</div>
 <script>
     const editImageModal = document.getElementById('@Model.ContextId');
+    const uploadBtn = document.getElementById("btn-upload");
     const fileEditModal = document.getElementById('fileEditModal');
     const btn = document.getElementById('open-btn');
     const btnNext = document.getElementById('btn-next');
@@ -179,14 +180,14 @@
     const btnSearchImages = document.getElementById('buttonSearchImages');
     const searchedImageContainer = document.getElementById('searchedImageContainer');
     const googleImageCardTemplate = `
-    <div class="rounded-lg bg-white text-surface shadow-secondary-1 dark:bg-surface-dark dark:text-white md:max-w-xl md:flex-row me-2 mb-2" style="width:10rem; height: 10rem">
-            <a href="#"><img class="rounded-lg searched-image" src="IMAGE_URL" style="max-height: 100%; padding: 2px"></a>
-    </div>`;
+        <div class="rounded-lg bg-white text-surface shadow-secondary-1 dark:bg-surface-dark dark:text-white md:max-w-xl md:flex-row me-2 mb-2" style="width:10rem; height: 10rem">
+                <a href="#"><img class="rounded-lg searched-image" src="IMAGE_URL" style="max-height: 100%; padding: 2px"></a>
+        </div>`;
     const imageEditButtonContainer = document.querySelector('#image-edit-button-container');
     const imageActionButtonContainer = document.getElementById("image-action-button-container");
     const cropBoxDropdown = document.querySelector('#cropBoxDropdown');
     const cropBoxDropdownOptions = document.querySelectorAll('.crop-box-dropdown-options');
-    
+
     let isImageEditEnable = false;
     let initialImage;
     let lastUpdatedImage;
@@ -259,14 +260,18 @@
         editImageModal.classList.remove("hidden")
     };
 
+    uploadBtn.onclick = () => {
+        uploadImage(document.querySelector(".file-edit-preview").querySelector("img").src);
+    };
+
     btnNext.onclick = async () => {
         editImageModal.classList.add("hidden");
         fileEditModal.classList.remove("hidden");
 
         if (!initialImage && !currentSearchedImageSelectedUrl) return;
-        
+
         if (!initialImage && currentSearchedImageSelectedUrl) initialImage = await getDataUrl(currentSearchedImageSelectedUrl);
-        
+
         loadImageToCropper('.file-edit-preview', initialImage)
     };
 
@@ -295,7 +300,7 @@
         return URL.createObjectURL(blob);
     }
 
-    
+
 
 
     // Functions
@@ -348,7 +353,7 @@
     };
 
     // Example usage:
-    
+
 
     function loadImageToCropper(conatinerId, imgSrc) {
         const imageContainer = document.querySelector(conatinerId);
@@ -359,7 +364,7 @@
     }
 
     function initiCropperObject(conatinerId, imgSrc) {
-        if(cropper && cropper.destroy) cropper.destroy();
+        if (cropper && cropper.destroy) cropper.destroy();
         const imageContainer = document.querySelector(conatinerId);
         imageContainer.innerHTML = '';
         const imgElement = document.createElement('img');
@@ -376,5 +381,30 @@
                 cropper.setCropBoxData({ width: currentCropperBoxWidth, height: currentCropperBoxHeight });
             }
         });
+    }
+
+    function uploadImage(imageDataUrl) {
+        let filePath = '@Model.DestinationFolder';
+        fetch('/Home/SaveImage', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ imageDataUrl, filePath })
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to save image');
+                }
+                fileEditModal.classList.add('hidden');
+                const filePreviewUploadContainer = document.querySelector('.file-upload-preview');
+                const fileEditContainer = document.querySelector('.file-edit-preview');
+                fileEditContainer.innerHTML = '';
+                filePreviewUploadContainer.innerHTML = '';
+                fileUploadContainer.classList.remove("hidden");
+            })
+            .catch(error => {
+                console.error(error);
+            });
     }
 </script>
