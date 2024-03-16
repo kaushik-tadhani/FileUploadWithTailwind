@@ -180,7 +180,7 @@
     const searchedImageContainer = document.getElementById('searchedImageContainer');
     const googleImageCardTemplate = `
     <div class="rounded-lg bg-white text-surface shadow-secondary-1 dark:bg-surface-dark dark:text-white md:max-w-xl md:flex-row me-2 mb-2" style="width:10rem; height: 10rem">
-        <a href="#"><img class="rounded-lg" src="IMAGE_URL" style="max-height: 100%"></a>
+            <a href="#"><img class="rounded-lg searched-image" src="IMAGE_URL" style="max-height: 100%; padding: 2px"></a>
     </div>`;
     const imageEditButtonContainer = document.querySelector('#image-edit-button-container');
     const imageActionButtonContainer = document.getElementById("image-action-button-container");
@@ -193,6 +193,23 @@
     let cropper;
     let currentCropperBoxWidth = 1024;
     let currentCropperBoxHeight = 300;
+    let currentSearchedImageSelectedUrl;
+
+    document.addEventListener('click', (event) => {
+        if (event.target.classList && event.target.classList.contains('searched-image')) {
+            document.querySelectorAll(".searched-image").forEach(img => {
+                img.classList.remove('border-doubled');
+                img.classList.remove('border-2');
+                img.classList.remove('border-blue-600');
+            });
+
+            event.target.classList.add('border-doubled');
+            event.target.classList.add('border-2');
+            event.target.classList.add('border-blue-600');
+
+            currentSearchedImageSelectedUrl = event.target.src;
+        }
+    });
 
     imageEditButtonContainer.querySelector("#btnImageEdit").addEventListener('click', () => {
         imageEditButtonContainer.classList.add("hidden");
@@ -242,9 +259,14 @@
         editImageModal.classList.remove("hidden")
     };
 
-    btnNext.onclick = () => {
+    btnNext.onclick = async () => {
         editImageModal.classList.add("hidden");
         fileEditModal.classList.remove("hidden");
+
+        if (!initialImage && !currentSearchedImageSelectedUrl) return;
+        
+        if (!initialImage && currentSearchedImageSelectedUrl) initialImage = await getDataUrl(currentSearchedImageSelectedUrl);
+        
         loadImageToCropper('.file-edit-preview', initialImage)
     };
 
@@ -266,6 +288,15 @@
             handleChange(event);
         }
     });
+
+    async function getDataUrl(url) {
+        const response = await fetch(url);
+        const blob = await response.blob();
+        return URL.createObjectURL(blob);
+    }
+
+    
+
 
     // Functions
     function handleDragOver(e) {
@@ -312,6 +343,7 @@
         const response = await fetch(`https://www.googleapis.com/customsearch/v1?q=${encodeURIComponent(query)}&cx=${searchEngineId}&key=${apiKey}&searchType=image`);
 
         const data = await response.json();
+        console.log(data);
         return data.items.map((item) => item.link);
     };
 
