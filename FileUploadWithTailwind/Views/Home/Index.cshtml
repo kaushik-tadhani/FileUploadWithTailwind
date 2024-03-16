@@ -1,0 +1,32 @@
+﻿@using FileUploadWithTailwind.Models
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewData["Title"] - FileUploadWithTailwind</title>
+    <link rel="stylesheet" href="~/css/tailwind.css" />
+    <link rel="stylesheet" href="~/lib/croppper/cropper.min.css" />
+</head>
+<body>
+    <div class="w-80 mx-auto mt-5 p-7">
+        <p class="text-2xl font-medium text-gray-800">
+            click here to open the modal
+        </p>
+        <button class="bg-purple-500 text-white rounded-md px-8 py-2 text-base font-medium hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-green-300" id="open-btn">
+            Open Modal
+        </button>
+
+        @(await Component.InvokeAsync("PhotoUpload", new PhotoUploadViewModal
+        {
+            ContextId = "editPhotoModal",
+            DestinationFolder = "d:/",
+            JavaScriptCallBackFunction = "test();",
+            PopupTitle = "Photo Upload"
+        }))
+    </div>
+    <script src="~/lib/croppper/cropper.min.js"></script>
+
+    
+</body>
+</html>
